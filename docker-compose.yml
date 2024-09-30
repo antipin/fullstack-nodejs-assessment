@@ -4,6 +4,9 @@ services:
       context: ./frontend
     ports:
       - "8080:8080"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     depends_on:
       - backend
     networks:
@@ -14,6 +17,9 @@ services:
       context: ./backend
     ports:
       - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
     environment:
       DATABASE_URL: postgres://user:password@db:5432/mydatabase
     depends_on:
