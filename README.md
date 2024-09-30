@@ -1,5 +1,5 @@
 # Assignment
-Create a backend for our cocktail app. Front end has been setup but will require some adjustments to support all the features. Stack used is Vue3 for front end and NestJS as backend.
+Create a backend for our cocktail app. Front end has been setup but will require some adjustments to support all the features. Stack used is Vue3 front end and a NestJS backend on docker.
 
 We ask you to expand this application to support
 * Search on ingredients and/or title
