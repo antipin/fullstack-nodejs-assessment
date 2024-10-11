@@ -1,10 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Cocktails } from './cocktails/cocktails.entity';
+import { CocktailsModule } from './cocktails/cocktails.module';
+import { ElasticSearch } from './elasticsearch.service';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    TypeOrmModule.forRoot({
+      url: process.env.DATABASE_URL,
+      type: 'postgres',
+      logging: true,
+      entities: [Cocktails],
+    }),
+    CocktailsModule,
+  ],
+  providers: [ElasticSearch]
 })
 export class AppModule {}

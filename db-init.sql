@@ -1,205 +1,29 @@
--- Initial SQL setup for the database
-CREATE TABLE IF NOT EXISTS Cocktails (
+
+-- Create the Cocktails table
+CREATE TABLE Cocktails (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    title VARCHAR(100) NOT NULL,
     description TEXT,
-    glass_type VARCHAR(255),
-    category VARCHAR(255)
+    glassType TEXT,
+    price DECIMAL(5, 2) NOT NULL,
+
+    CONSTRAINT "q_unique_title" UNIQUE ("title")
 );
 
-CREATE TABLE IF NOT EXISTS Ingredients (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS Cocktail_Ingredients (
-    id SERIAL PRIMARY KEY,
-    cocktail_id INT REFERENCES Cocktails(id),
-    ingredient_id INT REFERENCES Ingredients(id),
-    quantity VARCHAR(255),
-    measurement_unit VARCHAR(50)
-);
-
-CREATE TABLE IF NOT EXISTS Instructions (
-    id SERIAL PRIMARY KEY,
-    cocktail_id INT REFERENCES Cocktails(id),
-    step_number INT,
-    description TEXT
-);
-
--- Insert Ingredients
-INSERT INTO Ingredients (name) VALUES
-('Angostura Bitters'),
-('Aperol'),
-('Black Pepper'),
-('Campari'),
-('Celery Salt'),
-('Celery Stick'),
-('Club Soda'),
-('Cointreau'),
-('Cola'),
-('Cranberry Juice'),
-('Dry Vermouth'),
-('Egg White'),
-('Gin'),
-('Grenadine'),
-('Lemon Juice'),
-('Lemon Twist'),
-('Lime Juice'),
-('Lime Wedge'),
-('Maraschino Cherry'),
-('Mint Leaves'),
-('Olive'),
-('Orange Bitters'),
-('Orange Juice'),
-('Orange Twist'),
-('Pineapple Juice'),
-('Prosecco'),
-('Salt'),
-('Simple Syrup'),
-('Soda Water'),
-('Sugar'),
-('Sweet Vermouth'),
-('Tabasco Sauce'),
-('Tequila'),
-('Tomato Juice'),
-('Tonic Water'),
-('Triple Sec'),
-('Vodka'),
-('White Rum'),
-('Whiskey'),
-('Worcestershire Sauce');
-
--- Insert Cocktails
-INSERT INTO Cocktails (name, description, glass_type, category) VALUES
-('Mojito', 'A classic mojito.', 'Highball', 'Cocktail'),
-('Martini', 'A classic martini.', 'Cocktail', 'Cocktail'),
-('Margarita', 'A classic margarita.', 'Cocktail', 'Cocktail'),
-('Old Fashioned', 'A classic old fashioned.', 'Old Fashioned', 'Cocktail'),
-('Bloody Mary', 'A classic bloody mary.', 'Highball', 'Cocktail'),
-('Negroni', 'A classic negroni.', 'Rocks', 'Cocktail'),
-('Manhattan', 'A classic manhattan.', 'Cocktail', 'Cocktail'),
-('Daiquiri', 'A classic daiquiri.', 'Cocktail', 'Cocktail'),
-('Cosmopolitan', 'A classic cosmopolitan.', 'Cocktail', 'Cocktail'),
-('Whiskey Sour', 'A classic whiskey sour.', 'Old Fashioned', 'Cocktail');
-
--- Insert for Mojito
-INSERT INTO Cocktail_Ingredients (cocktail_id, ingredient_id, quantity, measurement_unit) VALUES
-((SELECT id FROM Cocktails WHERE name='Mojito'), (SELECT id FROM Ingredients WHERE name='White Rum'), '2', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Mojito'), (SELECT id FROM Ingredients WHERE name='Lime Juice'), '1', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Mojito'), (SELECT id FROM Ingredients WHERE name='Mint Leaves'), '10', ''),
-((SELECT id FROM Cocktails WHERE name='Mojito'), (SELECT id FROM Ingredients WHERE name='Soda Water'), '2', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Mojito'), (SELECT id FROM Ingredients WHERE name='Sugar'), '2', 'tsp');
-
-INSERT INTO Instructions (cocktail_id, step_number, description) VALUES
-((SELECT id FROM Cocktails WHERE name='Mojito'), 1, 'Muddle mint leaves with sugar and lime juice.'),
-((SELECT id FROM Cocktails WHERE name='Mojito'), 2, 'Add rum and fill the glass with ice.'),
-((SELECT id FROM Cocktails WHERE name='Mojito'), 3, 'Top up with soda water and garnish with mint sprig.');
-
--- Insert for Martini
-INSERT INTO Cocktail_Ingredients (cocktail_id, ingredient_id, quantity, measurement_unit) VALUES
-((SELECT id FROM Cocktails WHERE name='Martini'), (SELECT id FROM Ingredients WHERE name='Gin'), '2.5', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Martini'), (SELECT id FROM Ingredients WHERE name='Dry Vermouth'), '0.5', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Martini'), (SELECT id FROM Ingredients WHERE name='Olive'), '1', '');
-
-INSERT INTO Instructions (cocktail_id, step_number, description) VALUES
-((SELECT id FROM Cocktails WHERE name='Martini'), 1, 'Stir gin and vermouth with ice.'),
-((SELECT id FROM Cocktails WHERE name='Martini'), 2, 'Strain into a chilled cocktail glass.'),
-((SELECT id FROM Cocktails WHERE name='Martini'), 3, 'Garnish with an olive.');
-
--- Insert for Margarita
-INSERT INTO Cocktail_Ingredients (cocktail_id, ingredient_id, quantity, measurement_unit) VALUES
-((SELECT id FROM Cocktails WHERE name='Margarita'), (SELECT id FROM Ingredients WHERE name='Tequila'), '2', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Margarita'), (SELECT id FROM Ingredients WHERE name='Lime Juice'), '1', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Margarita'), (SELECT id FROM Ingredients WHERE name='Cointreau'), '1', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Margarita'), (SELECT id FROM Ingredients WHERE name='Salt'), '1', 'pinch');
-
-INSERT INTO Instructions (cocktail_id, step_number, description) VALUES
-((SELECT id FROM Cocktails WHERE name='Margarita'), 1, 'Shake ingredients with ice.'),
-((SELECT id FROM Cocktails WHERE name='Margarita'), 2, 'Strain into a salt-rimmed glass filled with fresh ice.');
-
--- Insert for Old Fashioned
-INSERT INTO Cocktail_Ingredients (cocktail_id, ingredient_id, quantity, measurement_unit) VALUES
-((SELECT id FROM Cocktails WHERE name='Old Fashioned'), (SELECT id FROM Ingredients WHERE name='Whiskey'), '2', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Old Fashioned'), (SELECT id FROM Ingredients WHERE name='Simple Syrup'), '1', 'tsp'),
-((SELECT id FROM Cocktails WHERE name='Old Fashioned'), (SELECT id FROM Ingredients WHERE name='Angostura Bitters'), '2', 'dashes'),
-((SELECT id FROM Cocktails WHERE name='Old Fashioned'), (SELECT id FROM Ingredients WHERE name='Orange Bitters'), '1', 'dash'),
-((SELECT id FROM Cocktails WHERE name='Old Fashioned'), (SELECT id FROM Ingredients WHERE name='Orange Twist'), '1', '');
-
-INSERT INTO Instructions (cocktail_id, step_number, description) VALUES
-((SELECT id FROM Cocktails WHERE name='Old Fashioned'), 1, 'Muddle bitters and simple syrup.'),
-((SELECT id FROM Cocktails WHERE name='Old Fashioned'), 2, 'Add whiskey and ice, and stir.'),
-((SELECT id FROM Cocktails WHERE name='Old Fashioned'), 3, 'Garnish with an orange twist.');
-
--- Insert for Bloody Mary
-INSERT INTO Cocktail_Ingredients (cocktail_id, ingredient_id, quantity, measurement_unit) VALUES
-((SELECT id FROM Cocktails WHERE name='Bloody Mary'), (SELECT id FROM Ingredients WHERE name='Vodka'), '1.5', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Bloody Mary'), (SELECT id FROM Ingredients WHERE name='Tomato Juice'), '3', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Bloody Mary'), (SELECT id FROM Ingredients WHERE name='Lemon Juice'), '0.5', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Bloody Mary'), (SELECT id FROM Ingredients WHERE name='Worcestershire Sauce'), '2', 'dashes'),
-((SELECT id FROM Cocktails WHERE name='Bloody Mary'), (SELECT id FROM Ingredients WHERE name='Tabasco Sauce'), '2', 'dashes'),
-((SELECT id FROM Cocktails WHERE name='Bloody Mary'), (SELECT id FROM Ingredients WHERE name='Celery Salt'), '1', 'pinch'),
-((SELECT id FROM Cocktails WHERE name='Bloody Mary'), (SELECT id FROM Ingredients WHERE name='Black Pepper'), '1', 'pinch'),
-((SELECT id FROM Cocktails WHERE name='Bloody Mary'), (SELECT id FROM Ingredients WHERE name='Celery Stick'), '1', '');
-
-INSERT INTO Instructions (cocktail_id, step_number, description) VALUES
-((SELECT id FROM Cocktails WHERE name='Bloody Mary'), 1, 'Combine ingredients with ice and stir.'),
-((SELECT id FROM Cocktails WHERE name='Bloody Mary'), 2, 'Strain into a glass with fresh ice.'),
-((SELECT id FROM Cocktails WHERE name='Bloody Mary'), 3, 'Garnish with a celery stick.');
-
--- Insert for Negroni
-INSERT INTO Cocktail_Ingredients (cocktail_id, ingredient_id, quantity, measurement_unit) VALUES
-((SELECT id FROM Cocktails WHERE name='Negroni'), (SELECT id FROM Ingredients WHERE name='Gin'), '1', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Negroni'), (SELECT id FROM Ingredients WHERE name='Sweet Vermouth'), '1', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Negroni'), (SELECT id FROM Ingredients WHERE name='Campari'), '1', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Negroni'), (SELECT id FROM Ingredients WHERE name='Orange Twist'), '1', '');
-
-INSERT INTO Instructions (cocktail_id, step_number, description) VALUES
-((SELECT id FROM Cocktails WHERE name='Negroni'), 1, 'Stir ingredients with ice.'),
-((SELECT id FROM Cocktails WHERE name='Negroni'), 2, 'Strain into a rocks glass over ice.'),
-((SELECT id FROM Cocktails WHERE name='Negroni'), 3, 'Garnish with an orange twist.');
-
--- Insert for Manhattan
-INSERT INTO Cocktail_Ingredients (cocktail_id, ingredient_id, quantity, measurement_unit) VALUES
-((SELECT id FROM Cocktails WHERE name='Manhattan'), (SELECT id FROM Ingredients WHERE name='Whiskey'), '2', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Manhattan'), (SELECT id FROM Ingredients WHERE name='Sweet Vermouth'), '1', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Manhattan'), (SELECT id FROM Ingredients WHERE name='Angostura Bitters'), '2', 'dashes'),
-((SELECT id FROM Cocktails WHERE name='Manhattan'), (SELECT id FROM Ingredients WHERE name='Maraschino Cherry'), '1', '');
-
-INSERT INTO Instructions (cocktail_id, step_number, description) VALUES
-((SELECT id FROM Cocktails WHERE name='Manhattan'), 1, 'Stir whiskey, vermouth, and bitters with ice.'),
-((SELECT id FROM Cocktails WHERE name='Manhattan'), 2, 'Strain into a chilled cocktail glass.'),
-((SELECT id FROM Cocktails WHERE name='Manhattan'), 3, 'Garnish with a maraschino cherry.');
-
--- Insert for Daiquiri
-INSERT INTO Cocktail_Ingredients (cocktail_id, ingredient_id, quantity, measurement_unit) VALUES
-((SELECT id FROM Cocktails WHERE name='Daiquiri'), (SELECT id FROM Ingredients WHERE name='White Rum'), '2', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Daiquiri'), (SELECT id FROM Ingredients WHERE name='Lime Juice'), '1', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Daiquiri'), (SELECT id FROM Ingredients WHERE name='Simple Syrup'), '0.75', 'oz');
-
-INSERT INTO Instructions (cocktail_id, step_number, description) VALUES
-((SELECT id FROM Cocktails WHERE name='Daiquiri'), 1, 'Shake ingredients with ice.'),
-((SELECT id FROM Cocktails WHERE name='Daiquiri'), 2, 'Strain into a chilled cocktail glass.');
-
--- Insert for Cosmopolitan
-INSERT INTO Cocktail_Ingredients (cocktail_id, ingredient_id, quantity, measurement_unit) VALUES
-((SELECT id FROM Cocktails WHERE name='Cosmopolitan'), (SELECT id FROM Ingredients WHERE name='Vodka'), '1.5', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Cosmopolitan'), (SELECT id FROM Ingredients WHERE name='Triple Sec'), '1', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Cosmopolitan'), (SELECT id FROM Ingredients WHERE name='Cranberry Juice'), '1', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Cosmopolitan'), (SELECT id FROM Ingredients WHERE name='Lime Juice'), '0.5', 'oz');
-
-INSERT INTO Instructions (cocktail_id, step_number, description) VALUES
-((SELECT id FROM Cocktails WHERE name='Cosmopolitan'), 1, 'Shake ingredients with ice.'),
-((SELECT id FROM Cocktails WHERE name='Cosmopolitan'), 2, 'Strain into a chilled cocktail glass.');
-
--- Insert for Whiskey Sour
-INSERT INTO Cocktail_Ingredients (cocktail_id, ingredient_id, quantity, measurement_unit) VALUES
-((SELECT id FROM Cocktails WHERE name='Whiskey Sour'), (SELECT id FROM Ingredients WHERE name='Whiskey'), '2', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Whiskey Sour'), (SELECT id FROM Ingredients WHERE name='Lemon Juice'), '0.75', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Whiskey Sour'), (SELECT id FROM Ingredients WHERE name='Simple Syrup'), '0.75', 'oz'),
-((SELECT id FROM Cocktails WHERE name='Whiskey Sour'), (SELECT id FROM Ingredients WHERE name='Egg White'), '1', '');
-
-INSERT INTO Instructions (cocktail_id, step_number, description) VALUES
-((SELECT id FROM Cocktails WHERE name='Whiskey Sour'), 1, 'Shake ingredients without ice to emulsify egg white.'),
-((SELECT id FROM Cocktails WHERE name='Whiskey Sour'), 2, 'Add ice and shake again.'),
-((SELECT id FROM Cocktails WHERE name='Whiskey Sour'), 3, 'Strain into an old fashioned glass with ice.');
+-- Insert mocktails into the Cocktails table
+INSERT INTO Cocktails (title, description, glassType, price) VALUES
+('Virgin Mojito', 'A refreshing mix of mint, lime, and soda water. Steps: 1. Muddle mint leaves and lime in a glass. 2. Add ice and soda water. 3. Stir well.', 'Highball', 4.50),
+('Shirley Temple', 'A sweet and fizzy blend of ginger ale and grenadine. Steps: 1. Fill a glass with ice. 2. Add ginger ale and grenadine. 3. Garnish with a cherry.', 'Highball', 3.75),
+('Virgin Piña Colada', 'A tropical blend of pineapple juice and coconut cream. Steps: 1. Blend pineapple juice and coconut cream with ice. 2. Pour into a chilled glass. 3. Garnish with a pineapple slice.', 'Collins', 5.00),
+('Virgin Mary', 'A non-alcoholic version of the classic Bloody Mary. Steps: 1. Mix tomato juice, lemon juice, and Worcestershire sauce. 2. Add a dash of hot sauce and stir. 3. Serve over ice with a celery stick.', 'Highball', 4.25),
+('Cinderella', 'A fruity mix of orange, lemon, and pineapple juices. Steps: 1. Combine juices in a shaker with ice. 2. Shake well and strain into a glass. 3. Garnish with a cherry and orange slice.', 'Margarita', 4.00),
+('Nojito', 'A non-alcoholic version of the classic Mojito. Steps: 1. Muddle mint leaves and lime in a glass. 2. Add sugar, ice, and soda water. 3. Stir well.', 'Highball', 4.50),
+('Fruit Punch', 'A blend of various fruit juices and soda. Steps: 1. Mix fruit juices in a large container. 2. Add soda and stir well. 3. Serve over ice.', 'Old Fashioned', 3.50),
+('Apple Fizz', 'A refreshing mix of apple juice and soda water. Steps: 1. Combine apple juice and soda water in a glass. 2. Add ice and stir. 3. Garnish with an apple slice.', 'Collins', 3.75),
+('Strawberry Lemonade', 'A sweet and tangy mix of strawberries and lemon juice. Steps: 1. Blend strawberries with lemon juice and sugar. 2. Add ice and water. 3. Stir well.', 'Highball', 4.00),
+('Mint Lemonade', 'A refreshing blend of mint and lemon. Steps: 1. Muddle mint leaves in a glass. 2. Add lemon juice, water, and ice. 3. Stir well.', 'Collins', 3.75),
+('Virgin Margarita', 'A non-alcoholic version of the classic Margarita. Steps: 1. Mix lime juice, orange juice, and simple syrup. 2. Shake well and strain into a glass with ice. 3. Garnish with a lime slice.', 'Margarita', 4.50),
+('Peach Bellini Mocktail', 'A sweet blend of peach puree and sparkling water. Steps: 1. Blend peach puree until smooth. 2. Combine with sparkling water in a glass. 3. Stir gently.', 'Coupe', 5.00),
+('Blue Lagoon Mocktail', 'A vibrant mix of blue curacao syrup, lemonade, and soda. Steps: 1. Mix blue curacao syrup and lemonade in a shaker with ice. 2. Shake well and strain into a glass. 3. Top with soda.', 'Highball', 4.25),
+('Cucumber Cooler', 'A refreshing blend of cucumber and mint. Steps: 1. Muddle cucumber and mint in a glass. 2. Add lime juice, soda water, and ice. 3. Stir well.', 'Collins', 4.00),
+('Tropical Fizz', 'A tropical mix of pineapple and coconut. Steps: 1. Combine pineapple juice and coconut water in a shaker with ice. 2. Shake well and strain into a glass. 3. Garnish with a pineapple slice.', 'Margarita', 4.75);
