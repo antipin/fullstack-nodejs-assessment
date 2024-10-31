@@ -6,7 +6,7 @@ Our simple cocktail app has a DB of cocktail recipies with a backend and front e
 
 # Submitting requirements
 The project is expected to be delivered as a GitHub (or any other public git
-hosting) repository URL. Please **DO NOT fork** the project.
+hosting) repository URL. Please **DO NOT fork** this project.
 
 # Bonus
 Feel free to add one additional features for bonus points, here are some suggestions:
@@ -15,6 +15,7 @@ Feel free to add one additional features for bonus points, here are some suggest
 * Integration tests
 
 # Provided boilerplate
+https://github.com/eduard-wu/fullstack-nodejs-assessment
 * Basic Vue3 front end with all required pages and views
 * Basic NestJS Backend for existing page and connection to DB
 * ElasticSearch is setup
