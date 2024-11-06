@@ -3,15 +3,18 @@
     <form @submit.prevent="submitForm">
       <div>
         <label for="title">Title:</label>
-        <input type="text" v-model="form.title" id="title" required>
+        <!-- <input type="text" v-model="form.title" id="title" required> -->
+        <input type="text" v-model="form.title" id="title">
       </div>
       <div>
         <label for="price">Price:</label>
-        <input type="number" v-model="form.price" id="price" required>
+        <!-- <input type="number" v-model="form.price" id="price" required> -->
+        <input type="number" v-model="form.price" id="price">
       </div>
       <div>
         <label for="description">Description:</label>
-        <textarea v-model="form.description" id="description" required></textarea>
+        <!-- <textarea v-model="form.description" id="description" required></textarea> -->
+        <textarea v-model="form.description" id="description"></textarea>
       </div>
       <button type="submit">Submit</button>
     </form>
