@@ -10,6 +10,29 @@ CREATE TABLE Cocktails (
     CONSTRAINT "q_unique_title" UNIQUE ("title")
 );
 
+-- Add the document column to the Cocktails table to support full text seartch
+ALTER TABLE Cocktails
+    ADD COLUMN document tsvector;
+UPDATE Cocktails
+    SET document = setweight(to_tsvector(title), 'A') ||
+                   setweight(to_tsvector(description), 'B');
+
+CREATE INDEX document_idx
+    ON Cocktails
+    USING GIN (document);
+
+CREATE FUNCTION cocktails_tsvector_trigger() RETURNS trigger AS $$
+begin
+  new.document :=
+    setweight(to_tsvector('english', coalesce(new.title, '')), 'A') ||
+    setweight(to_tsvector('english', coalesce(new.description, '')), 'B');
+  return new;
+end
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+    ON Cocktails FOR EACH ROW EXECUTE PROCEDURE cocktails_tsvector_trigger();
+
 -- Insert mocktails into the Cocktails table
 INSERT INTO Cocktails (title, description, glassType, price) VALUES
 ('Virgin Mojito', 'A refreshing mix of mint, lime, and soda water. Steps: 1. Muddle mint leaves and lime in a glass. 2. Add ice and soda water. 3. Stir well.', 'Highball', 4.50),

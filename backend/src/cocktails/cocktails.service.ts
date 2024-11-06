@@ -15,9 +15,9 @@ export class CocktailsService {
     const queryBuilder = this.cocktailsRepository.createQueryBuilder();
     if (text !== '') {
       queryBuilder.where(
-        `to_tsvector('english', title || ' ' || description) @@ to_tsquery(:query)`,
+        `document @@ plainto_tsquery(:query)`,
         { query: text }
-      )
+      );
     }
     return queryBuilder.getMany();
   }
