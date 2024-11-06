@@ -11,7 +11,8 @@ hosting) repository URL. Please **DO NOT fork** this project.
 # Bonus
 Feel free to add one additional features for bonus points, here are some suggestions:
 - [ ] Fuzzy Search on description and title using ElasticSearch (service is already installed)
-- [ ] OpenAPI documentation of APIs
+- [x] OpenAPI documentation of APIs.
+      OpenAPI documentation is exposed at http://localhost:3000/docs#/
 - [ ] Integration tests
 
 # Provided boilerplate

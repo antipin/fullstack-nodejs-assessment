@@ -26,7 +26,7 @@ export class CocktailsService {
     return this.cocktailsRepository.findOneBy({ id });
   }
 
-  async create(cocktail: Cocktails) {
+  async create(cocktail: Omit<Cocktails, 'id'>) {
     try {
       return await this.cocktailsRepository.insert(cocktail);
     } catch (error) {
