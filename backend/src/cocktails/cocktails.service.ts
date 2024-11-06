@@ -10,8 +10,17 @@ export class CocktailsService {
     private cocktailsRepository: Repository<Cocktails>,
   ) {}
 
-  findAll(): Promise<Cocktails[]> {
-    return this.cocktailsRepository.find();
+  findAll(text: string = ''): Promise<Cocktails[]> {
+    const queryBuilder = this.cocktailsRepository.createQueryBuilder();
+    if (text !== '') {
+      // Full text PoC (slow)
+      // todo: move to db-init.sql
+      queryBuilder.where(
+        `to_tsvector('english', title || ' ' || description) @@ to_tsquery(:query)`,
+        { query: text }
+      )
+    }
+    return queryBuilder.getMany();
   }
 
   findOne(id: number): Promise<Cocktails | null> {

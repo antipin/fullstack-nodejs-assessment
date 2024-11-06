@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Param, ParseIntPipe, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, ParseIntPipe, Query, NotFoundException } from '@nestjs/common';
 import { Cocktails } from './cocktails.entity';
 import { CocktailsService } from './cocktails.service';
 
@@ -7,8 +7,8 @@ export class CocktailsController {
   constructor(private readonly cocktailsService: CocktailsService) {}
 
   @Get()
-  searchCocktails() : Promise<Cocktails[]> {
-    return this.cocktailsService.findAll();
+  searchCocktails(@Query('q') query: string = '') : Promise<Cocktails[]> {
+    return this.cocktailsService.findAll(query);
   }
 
   @Post()
